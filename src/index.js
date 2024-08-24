@@ -6,7 +6,15 @@ dotenv.config({
   path: "./env",
 });
 
-connectDB();
+connectDB()
+  .then(() => {
+    app.listen(process.nextTick.PORT || 8000, () => {
+      console.log(` Server is running at port ${process.env.PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.log(`MONGO CONNECTION FAILED!! : ${err}`);
+  });
 
 // const app = express()(async () => {
 //   try {
