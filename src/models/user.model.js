@@ -32,12 +32,6 @@ const userSchema = new Schema(
     coverimage: {
       type: String, // cloudinary url
     },
-    watchHistory: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Video",
-      },
-    ],
     password: {
       type: String,
       required: [true, "Password is required"],
@@ -45,6 +39,12 @@ const userSchema = new Schema(
     refreshToken: {
       type: String,
     },
+    watchHistory: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Video",
+      },
+    ],
   },
   {
     timestamps: true,
@@ -52,7 +52,7 @@ const userSchema = new Schema(
 );
 
 userSchema.pre("save", async function (next) {
-  if (this.isModedified("password")) {
+  if (this.isModified("password")) {
     this.password = await bcrypt.hash(this.password, 10);
   }
   next();
